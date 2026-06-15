@@ -12,7 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthenticatedAppRouteImport } from './routes/_authenticated/app'
+import { Route as AuthenticatedAppIndexRouteImport } from './routes/_authenticated/app.index'
 import { Route as AuthenticatedAppGameGameIdRouteImport } from './routes/_authenticated/app/game.$gameId'
 
 const AuthRoute = AuthRouteImport.update({
@@ -29,28 +29,28 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedAppRoute = AuthenticatedAppRouteImport.update({
-  id: '/app',
-  path: '/app',
+const AuthenticatedAppIndexRoute = AuthenticatedAppIndexRouteImport.update({
+  id: '/app/',
+  path: '/app/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedAppGameGameIdRoute =
   AuthenticatedAppGameGameIdRouteImport.update({
-    id: '/game/$gameId',
-    path: '/game/$gameId',
-    getParentRoute: () => AuthenticatedAppRoute,
+    id: '/app/game/$gameId',
+    path: '/app/game/$gameId',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/app': typeof AuthenticatedAppRouteWithChildren
+  '/app/': typeof AuthenticatedAppIndexRoute
   '/app/game/$gameId': typeof AuthenticatedAppGameGameIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/app': typeof AuthenticatedAppRouteWithChildren
+  '/app': typeof AuthenticatedAppIndexRoute
   '/app/game/$gameId': typeof AuthenticatedAppGameGameIdRoute
 }
 export interface FileRoutesById {
@@ -58,12 +58,12 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
-  '/_authenticated/app': typeof AuthenticatedAppRouteWithChildren
+  '/_authenticated/app/': typeof AuthenticatedAppIndexRoute
   '/_authenticated/app/game/$gameId': typeof AuthenticatedAppGameGameIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/app' | '/app/game/$gameId'
+  fullPaths: '/' | '/auth' | '/app/' | '/app/game/$gameId'
   fileRoutesByTo: FileRoutesByTo
   to: '/' | '/auth' | '/app' | '/app/game/$gameId'
   id:
@@ -71,7 +71,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
-    | '/_authenticated/app'
+    | '/_authenticated/app/'
     | '/_authenticated/app/game/$gameId'
   fileRoutesById: FileRoutesById
 }
@@ -104,40 +104,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/app': {
-      id: '/_authenticated/app'
+    '/_authenticated/app/': {
+      id: '/_authenticated/app/'
       path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof AuthenticatedAppRouteImport
+      fullPath: '/app/'
+      preLoaderRoute: typeof AuthenticatedAppIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/app/game/$gameId': {
       id: '/_authenticated/app/game/$gameId'
-      path: '/game/$gameId'
+      path: '/app/game/$gameId'
       fullPath: '/app/game/$gameId'
       preLoaderRoute: typeof AuthenticatedAppGameGameIdRouteImport
-      parentRoute: typeof AuthenticatedAppRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
 
-interface AuthenticatedAppRouteChildren {
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAppIndexRoute: typeof AuthenticatedAppIndexRoute
   AuthenticatedAppGameGameIdRoute: typeof AuthenticatedAppGameGameIdRoute
 }
 
-const AuthenticatedAppRouteChildren: AuthenticatedAppRouteChildren = {
-  AuthenticatedAppGameGameIdRoute: AuthenticatedAppGameGameIdRoute,
-}
-
-const AuthenticatedAppRouteWithChildren =
-  AuthenticatedAppRoute._addFileChildren(AuthenticatedAppRouteChildren)
-
-interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAppRoute: typeof AuthenticatedAppRouteWithChildren
-}
-
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAppRoute: AuthenticatedAppRouteWithChildren,
+  AuthenticatedAppIndexRoute: AuthenticatedAppIndexRoute,
+  AuthenticatedAppGameGameIdRoute: AuthenticatedAppGameGameIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
