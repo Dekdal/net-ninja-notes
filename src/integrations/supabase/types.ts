@@ -14,7 +14,113 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      games: {
+        Row: {
+          category: string | null
+          competition: string | null
+          created_at: string
+          game_date: string
+          goalkeeper_name: string
+          id: string
+          opponent: string
+          team_name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          competition?: string | null
+          created_at?: string
+          game_date: string
+          goalkeeper_name: string
+          id?: string
+          opponent: string
+          team_name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          competition?: string | null
+          created_at?: string
+          game_date?: string
+          goalkeeper_name?: string
+          id?: string
+          opponent?: string
+          team_name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          id: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      shots: {
+        Row: {
+          created_at: string
+          dominant_hand: string | null
+          game_id: string
+          game_time: string | null
+          id: string
+          player_number: number | null
+          position: string
+          result: string
+          shot_type: string
+          user_id: string
+          zone: string
+        }
+        Insert: {
+          created_at?: string
+          dominant_hand?: string | null
+          game_id: string
+          game_time?: string | null
+          id?: string
+          player_number?: number | null
+          position: string
+          result: string
+          shot_type: string
+          user_id: string
+          zone: string
+        }
+        Update: {
+          created_at?: string
+          dominant_hand?: string | null
+          game_id?: string
+          game_time?: string | null
+          id?: string
+          player_number?: number | null
+          position?: string
+          result?: string
+          shot_type?: string
+          user_id?: string
+          zone?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shots_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: false
+            referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
