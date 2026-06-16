@@ -17,6 +17,9 @@ export default defineConfig({
     tailwindcss(),
   ],
   build: {
-    outDir: "dist",
+    // Output into docs/ so GitHub Pages can serve it via "Deploy from a branch"
+    // (Pages only serves from the repo root or /docs). This folder is committed.
+    outDir: "docs",
+    emptyOutDir: true,
   },
 });
